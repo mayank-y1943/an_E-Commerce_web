@@ -1,3 +1,6 @@
+import {cart, addToCart} from '../data/cart.js';
+import { products } from '../data/products.js';
+
 let productHtml='';
 products.forEach((product)=>{
     productHtml+=`<div class="product-container">
@@ -48,44 +51,36 @@ products.forEach((product)=>{
             Add to Cart
           </button>
         </div>`;
-})
-
+});
 document.querySelector('.js-product-grid').innerHTML=productHtml;
+
+
+function addedToCartMessage(productId){
+  document.querySelector(`.js-added-to-cart-${productId}`).classList.toggle('added');
+
+  setTimeout(()=>{
+    document.querySelector(`.js-added-to-cart-${productId}`).classList.toggle('added');
+  }, 1000);
+}
+
+function updateCartQuantity(){
+  let Quantity=0;
+  cart.forEach((cartItem)=>{
+      Quantity+=cartItem.quantity;
+  });
+
+  document.querySelector('.js-cart-quantity').innerHTML=Quantity;
+}
 
 document.querySelectorAll('.js-add-to-cart-button').forEach((button)=>{
     button.addEventListener('click', ()=>{
         const productId=button.dataset.productId;
 
-        document.querySelector(`.js-added-to-cart-${productId}`).classList.toggle('added');
+        addedToCartMessage(productId);
 
-        setTimeout(()=>{
-          document.querySelector(`.js-added-to-cart-${productId}`).classList.toggle('added');
-        }, 1000);
-      
-        let selectedQuantity=document.querySelector(`.js-quantity-selector-${productId}`).value;
+        addToCart(productId);
 
-        let found=false;
-        cart.forEach((item)=>{
-            if(item.productId===productId){
-                item.quantity+=Number(selectedQuantity);
-                found=true;
-            }
-        });
+        updateCartQuantity();
 
-        if(!found){
-            cart.push(
-                {
-                    productId: productId,
-                    quantity: Number(selectedQuantity)
-                }
-            );
-        }
-        console.log(cart);
-        let Quantity=0;
-        cart.forEach((items)=>{
-            Quantity+=items.quantity;
-        });
-
-        document.querySelector('.js-cart-quantity').innerHTML=Quantity;
     })
 });
