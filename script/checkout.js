@@ -1,5 +1,5 @@
 import { products } from '../data/products.js';
-import { cart, deleteFromCart } from '../data/cart.js';
+import { cart, deleteFromCart, updateCartQuantity } from '../data/cart.js';
 
 
 
@@ -100,5 +100,17 @@ document.querySelectorAll('.js-delete-link')
         const productId=link.dataset.productId;
         deleteFromCart(productId);
         document.querySelector(`.js-cart-item-container-${productId}`).remove();
+        updateCheckoutQuantity();
     })
 });
+
+function updateCheckoutQuantity(){
+  const Quantity=updateCartQuantity();
+  document.querySelector('.js-checkout-header-middle-section').innerHTML=
+  `Checkout (<a class="return-to-home-link"
+    href="amazon.html">${Quantity} items</a>)
+  `;
+}
+
+
+updateCheckoutQuantity();
