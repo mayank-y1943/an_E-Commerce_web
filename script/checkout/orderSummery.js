@@ -2,6 +2,7 @@ import { getMatchingItem, products } from '../../data/products.js';
 import { cart, deleteFromCart, updateCartQuantity, updateDeliveryOptionId } from '../../data/cart.js';
 import dayjs from 'https://unpkg.com/dayjs@1.8.9/esm/index.js';
 import { deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {renderPaymentSummeryHTML} from './paymentSummery.js';
 
 export function renderOrderSummeryHTML(){
 
@@ -74,7 +75,7 @@ export function renderOrderSummeryHTML(){
         priceString='FREE';
       }
       else{
-        priceString=`$${(deliveryOption.priceCent/100).toFixed(2)}`;
+        priceString=`$${(deliveryOption.priceCent/100).toFixed(2)} -`;
       }
       const isChecked=deliveryOption.Id===cartItem.deliveryOptionId;
       html+=`
@@ -90,7 +91,7 @@ export function renderOrderSummeryHTML(){
             ${dateString}
           </div>
           <div class="delivery-option-price">
-            ${priceString} - Shipping
+            ${priceString}  Shipping
           </div>
         </div>
       </div>
@@ -106,6 +107,7 @@ export function renderOrderSummeryHTML(){
           deleteFromCart(productId);
           document.querySelector(`.js-cart-item-container-${productId}`).remove();
           updateCheckoutQuantity();
+          renderPaymentSummeryHTML();
       })
   });
 
@@ -126,6 +128,7 @@ export function renderOrderSummeryHTML(){
       const deliveryOptionId=element.dataset.deliveryOptionId;
       updateDeliveryOptionId(productId, deliveryOptionId);
       renderOrderSummeryHTML();
+      renderPaymentSummeryHTML();
     });
   });
 }
