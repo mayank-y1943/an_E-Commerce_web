@@ -234,3 +234,10 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+.empty-cart{
+  display: none;
+}
+
+.cart-is-empty{
+  display: initial;
+}

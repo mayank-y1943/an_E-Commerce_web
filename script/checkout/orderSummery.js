@@ -119,6 +119,9 @@ export function renderOrderSummeryHTML(){
 
   function updateCheckoutQuantity(){
     const Quantity=getCartQuantity();
+    if(Quantity===0){
+      document.querySelector('.js-empty-cart').classList.add('cart-is-empty');
+    }
     document.querySelector('.js-checkout-header-middle-section').innerHTML=
     `Checkout (<a class="return-to-home-link"
       href="amazon.html">${Quantity} items</a>)
