@@ -1,4 +1,4 @@
-import {cart, updateCartQuantity} from '../../data/cart.js';
+import {cart, getCartQuantity} from '../../data/cart.js';
 import { getMatchingItem } from '../../data/products.js';
 import { getDeliveryOption, deliveryOptions } from '../../data/deliveryOptions.js';
 
@@ -19,7 +19,7 @@ export function renderPaymentSummeryHTML(){
 
     const orderTotal=totalBeforTax+estimatedTax;
 
-    const items=updateCartQuantity();
+    const items=getCartQuantity();
     
     const paymentSummeryHTML=`
           <div class="payment-summary-title">

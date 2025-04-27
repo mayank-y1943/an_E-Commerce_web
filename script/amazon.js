@@ -1,4 +1,4 @@
-import {cart, addToCart, updateCartQuantity} from '../data/cart.js';
+import {cart, addToCart, getCartQuantity} from '../data/cart.js';
 import { products } from '../data/products.js';
 
 let productHtml='';
@@ -64,7 +64,7 @@ function addedToCartMessage(productId){
 }
 
 function updateCartQuantityAtHeader(){
-  const Quantity=updateCartQuantity();
+  const Quantity=getCartQuantity();
   document.querySelector('.js-cart-quantity').innerHTML=Quantity;
 }
 
