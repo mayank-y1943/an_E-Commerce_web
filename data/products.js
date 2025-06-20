@@ -46,7 +46,25 @@ class Clothing extends Product{
   extraHtmlInfo(){
     return `
       <a href="${this.sizeChartLink}" target="_blank">
-      size chart</a>
+      size chart
+      </a>
+    `;
+  }
+}
+
+class Appliance extends Product{
+  warrantyLink;
+
+  constructor(productDetails){
+    super(productDetails);
+    this.warrantyLink=productDetails.applianceWarranty;
+  }
+
+  extraHtmlInfo(){
+    return `
+      <a href="${this.warrantyLink}" target="_blank">
+      warranty
+      </a>
     `;
   }
 }
@@ -111,7 +129,9 @@ export const products = [
       "toaster",
       "kitchen",
       "appliances"
-    ]
+    ],
+    type: "appliance",
+    applianceWarranty: "images/appliance-warranty.png"
   },
   {
     id: "3ebe75dc-64d2-4137-8860-1f5a963e534b",
@@ -296,7 +316,9 @@ export const products = [
       "water boiler",
       "appliances",
       "kitchen"
-    ]
+    ],
+    type: "appliance",
+    applianceWarranty: "images/appliance-warranty.png"
   },
   {
     id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
@@ -713,6 +735,9 @@ export const products = [
 ].map((productDetails)=>{
   if(productDetails.type==='clothing'){
     return new Clothing(productDetails);
+  }
+  if(productDetails.type==='appliance'){
+    return new Appliance(productDetails);
   }
   return new Product(productDetails);
 });
