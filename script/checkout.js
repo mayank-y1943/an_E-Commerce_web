@@ -5,8 +5,12 @@ import { loadProduct, loadProductFetch } from "../data/products.js";
 // import '../data/backend-practice.js';
 
 async function loadPage() {
-    await loadProductFetch();
-    
+    try{
+        await loadProductFetch();
+    }catch(error){
+        console.log('unexpected error');
+    }
+
     renderOrderSummeryHTML();
     renderPaymentSummeryHTML();
 }
