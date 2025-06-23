@@ -1,6 +1,7 @@
 import {cart, getCartQuantity} from '../../data/cart.js';
 import { getMatchingItem } from '../../data/products.js';
 import { getDeliveryOption, deliveryOptions } from '../../data/deliveryOptions.js';
+import { addOrder } from '../../data/order.js';
 
 export function renderPaymentSummeryHTML(){
   
@@ -61,12 +62,33 @@ export function renderPaymentSummeryHTML(){
             </div>
           </div>
 
-          <button class="place-order-button button-primary">
+          <button class="place-order-button button-primary
+          js-place-order">
             Place your order
           </button>
     `;
 
     document.querySelector('.js-payment-summery')
         .innerHTML=paymentSummeryHTML;
+
+    document.querySelector('.js-place-order')
+      .addEventListener('click', async ()=>{
+        try{
+          const response=await fetch('https://supersimplebackend.dev/orders', {
+              method: 'POST',
+              headers:{
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                cart: cart
+              })
+          });
+          const order=await response.json();
+          addOrder(order);
+        }catch(error){
+          console.log('unexpected error');
+        }
+        window.location.href='orders.html';
+      });
 
 }
