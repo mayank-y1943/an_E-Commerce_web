@@ -68,8 +68,15 @@ export function renderPaymentSummeryHTML(){
           </button>
     `;
 
-    document.querySelector('.js-payment-summery')
-        .innerHTML=paymentSummeryHTML;
+    const cartQuantity=getCartQuantity();
+    if(cartQuantity===0){
+      document.querySelector('.js-payment-summery')
+        .innerHTML='';
+    }
+    else{
+      document.querySelector('.js-payment-summery')
+          .innerHTML=paymentSummeryHTML;
+    }
 
     document.querySelector('.js-place-order')
       .addEventListener('click', async ()=>{
@@ -85,6 +92,7 @@ export function renderPaymentSummeryHTML(){
           });
           const order=await response.json();
           addOrder(order);
+          localStorage.removeItem('cart');
         }catch(error){
           console.log('unexpected error');
         }
