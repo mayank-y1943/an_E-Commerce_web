@@ -12,6 +12,18 @@ async function loadOrder(){
     }
     
     await loadProductFetch();
+
+    const orderId=orders[0].id;
+    const orderTime=orders[0].orderTime;
+    const totatCost=orders[0].totalCostCents;
+
+    const orderDate = new Date(orderTime);
+
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric'
+    }).format(orderDate);
+
     let orderHtml=`
         <div class="order-container">
           
@@ -19,17 +31,17 @@ async function loadOrder(){
             <div class="order-header-left-section">
               <div class="order-date">
                 <div class="order-header-label">Order Placed:</div>
-                <div>August 12</div>
+                <div>${formattedDate}</div>
               </div>
               <div class="order-total">
                 <div class="order-header-label">Total:</div>
-                <div>$35.06</div>
+                <div>${(totatCost/100).toFixed(2)}</div>
               </div>
             </div>
 
             <div class="order-header-right-section">
               <div class="order-header-label">Order ID:</div>
-              <div>27cba69d-4c3d-4098-b42d-ac7fa62b7664</div>
+              <div>${orderId}</div>
             </div>
           </div>
 
@@ -42,6 +54,14 @@ async function loadOrder(){
 
         productArr.forEach((item)=>{
             const matchingItem=getMatchingItem(item.productId);
+
+            const date = new Date(item.estimatedDeliveryTime);
+
+            const formatted = new Intl.DateTimeFormat('en-US', {
+              month: 'long',
+              day: 'numeric'
+            }).format(date);
+
             orderHtml+=`
             <div class="product-image-container">
               <img src="${matchingItem.image}">
@@ -52,10 +72,10 @@ async function loadOrder(){
                 ${matchingItem.name}
               </div>
               <div class="product-delivery-date">
-                Arriving on: August 15
+                Arriving on: ${formatted}
               </div>
               <div class="product-quantity">
-                Quantity: 1
+                Quantity: ${item.quantity}
               </div>
               <button class="buy-again-button button-primary">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
