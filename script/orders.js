@@ -21,7 +21,8 @@ async function loadOrder(){
 
     const formattedDate = new Intl.DateTimeFormat('en-US', {
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
+      year: 'numeric'
     }).format(orderDate);
 
     let orderHtml=`
@@ -59,7 +60,8 @@ async function loadOrder(){
 
             const formatted = new Intl.DateTimeFormat('en-US', {
               month: 'long',
-              day: 'numeric'
+              day: 'numeric',
+              year: 'numeric'
             }).format(date);
 
             orderHtml+=`
