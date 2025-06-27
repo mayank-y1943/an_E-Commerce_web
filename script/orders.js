@@ -1,18 +1,18 @@
 import { orders } from "../data/order.js";
 import { getMatchingItem, loadProductFetch } from "../data/products.js";
-import { deleteFromCart } from "../data/cart.js";
+import { deleteFromCart, getCartQuantity } from "../data/cart.js";
 
 async function loadOrder(){
 
-    let orderGridHtml=localStorage.getItem('orderGrid')||'';
-
-    const neworder=localStorage.getItem('orders');
-    if(!neworder){
-        document.querySelector('.js-orders-grid').innerHTML=orderGridHtml;
-        return;
-    }
-    
-    await loadProductFetch();
+  let orderGridHtml=localStorage.getItem('orderGrid')||'';
+  
+  const neworder=localStorage.getItem('orders');
+  if(!neworder){
+    document.querySelector('.js-orders-grid').innerHTML=orderGridHtml;
+    return;
+  }
+  
+  await loadProductFetch();
 
     const orderId=orders[0].id;
     const orderTime=orders[0].orderTime;

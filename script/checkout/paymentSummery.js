@@ -76,26 +76,27 @@ export function renderPaymentSummeryHTML(){
     else{
       document.querySelector('.js-payment-summery')
           .innerHTML=paymentSummeryHTML;
-    }
 
-    document.querySelector('.js-place-order')
-      .addEventListener('click', async ()=>{
-        try{
-          const response=await fetch('https://supersimplebackend.dev/orders', {
-              method: 'POST',
-              headers:{
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                cart: cart
-              })
-          });
-          const order=await response.json();
-          addOrder(order);
-        }catch(error){
-          console.log('unexpected error');
-        }
-        window.location.href='orders.html';
-      });
+
+      document.querySelector('.js-place-order')
+        .addEventListener('click', async ()=>{
+          try{
+            const response=await fetch('https://supersimplebackend.dev/orders', {
+                method: 'POST',
+                headers:{
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  cart: cart
+                })
+            });
+            const order=await response.json();
+            addOrder(order);
+          }catch(error){
+            console.log('unexpected error');
+          }
+          window.location.href='orders.html';
+        });
+    }
 
 }
