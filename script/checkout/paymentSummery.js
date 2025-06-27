@@ -91,7 +91,6 @@ export function renderPaymentSummeryHTML(){
               })
           });
           const order=await response.json();
-          localStorage.removeItem('cart');
           addOrder(order);
         }catch(error){
           console.log('unexpected error');

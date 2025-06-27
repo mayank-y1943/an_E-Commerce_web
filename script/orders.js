@@ -1,5 +1,6 @@
 import { orders } from "../data/order.js";
 import { getMatchingItem, loadProductFetch } from "../data/products.js";
+import { deleteFromCart } from "../data/cart.js";
 
 async function loadOrder(){
 
@@ -55,6 +56,8 @@ async function loadOrder(){
 
         productArr.forEach((item)=>{
             const matchingItem=getMatchingItem(item.productId);
+
+            deleteFromCart(item.productId);
 
             const date = new Date(item.estimatedDeliveryTime);
 
