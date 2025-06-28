@@ -5,8 +5,7 @@ import { addToCart, deleteFromCart, getCartQuantity, updateCartQuantity } from "
 async function loadPage() {
   await loadProductFetch();
 
-  const Quantity=getCartQuantity();
-  document.querySelector('.js-order-cart-quantity').innerHTML=Quantity;
+  updateOrderCartQuantity();
 
   let ordersHTML = '';
 
@@ -104,14 +103,17 @@ async function loadPage() {
 
         addToCart(productId, 1);
 
-        const Quantity=getCartQuantity();
-        document.querySelector('.js-order-cart-quantity').innerHTML=Quantity;
-        
+        updateOrderCartQuantity();
+
       })
     });
 }
 loadPage();
 
+function updateOrderCartQuantity(){
+  const Quantity=getCartQuantity();
+  document.querySelector('.js-order-cart-quantity').innerHTML=Quantity;
+}
 /*
 async function loadOrder(){
 
