@@ -1,9 +1,12 @@
 import { orders } from "../data/order.js";
 import { getMatchingItem, loadProductFetch } from "../data/products.js";
-import { deleteFromCart, getCartQuantity } from "../data/cart.js";
+import { deleteFromCart, getCartQuantity, updateCartQuantity } from "../data/cart.js";
 
 async function loadPage() {
   await loadProductFetch();
+
+  const Quantity=getCartQuantity();
+  document.querySelector('.js-order-cart-quantity').innerHTML=Quantity;
 
   let ordersHTML = '';
 
@@ -48,7 +51,7 @@ async function loadPage() {
     order.products.forEach((productDetails) => {
 
       const product = getMatchingItem(productDetails.productId);
-      
+
       const date = new Date(productDetails.estimatedDeliveryTime);
 
       const formatted = new Intl.DateTimeFormat('en-US', {

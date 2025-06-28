@@ -1,7 +1,7 @@
-import {cart, getCartQuantity} from '../../data/cart.js';
+import {cart, deleteFromCart, getCartQuantity} from '../../data/cart.js';
 import { getMatchingItem } from '../../data/products.js';
 import { getDeliveryOption, deliveryOptions } from '../../data/deliveryOptions.js';
-import { addOrder } from '../../data/order.js';
+import { addOrder, orders } from '../../data/order.js';
 
 export function renderPaymentSummeryHTML(){
   
@@ -92,6 +92,9 @@ export function renderPaymentSummeryHTML(){
             });
             const order=await response.json();
             addOrder(order);
+            order.products.forEach(product => {
+              deleteFromCart(product.productId);
+            });
           }catch(error){
             console.log('unexpected error');
           }
