@@ -8,7 +8,3 @@ export function addOrder(order){
 function saveToStorage(){
     localStorage.setItem('orders', JSON.stringify(orders));
 }
-
-export function deletePlacedOrder(){
-    
-}

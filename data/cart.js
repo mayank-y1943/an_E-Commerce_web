@@ -21,8 +21,8 @@ function loadFromStorage(){
 
 loadFromStorage();
 
-export function addToCart(productId){
-  let selectedQuantity=document.querySelector(`.js-quantity-selector-${productId}`).value;
+export function addToCart(productId, selectedQuantity){
+  // let selectedQuantity=document.querySelector(`.js-quantity-selector-${productId}`).value;
 
   let found=false;
   cart.forEach((cartItem)=>{

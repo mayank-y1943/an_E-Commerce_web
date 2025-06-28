@@ -83,7 +83,9 @@ function renderProductGrid(){
 
           addedToCartMessage(productId);
 
-          addToCart(productId);
+          let selectedQuantity=document.querySelector(`.js-quantity-selector-${productId}`).value;
+
+          addToCart(productId, selectedQuantity);
 
           updateCartQuantityAtHeader();
 

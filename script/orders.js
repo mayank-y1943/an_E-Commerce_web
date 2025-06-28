@@ -1,6 +1,6 @@
 import { orders } from "../data/order.js";
 import { getMatchingItem, loadProductFetch } from "../data/products.js";
-import { deleteFromCart, getCartQuantity, updateCartQuantity } from "../data/cart.js";
+import { addToCart, deleteFromCart, getCartQuantity, updateCartQuantity } from "../data/cart.js";
 
 async function loadPage() {
   await loadProductFetch();
@@ -76,7 +76,8 @@ async function loadPage() {
           <div class="product-quantity">
             Quantity: ${productDetails.quantity}
           </div>
-          <button class="buy-again-button button-primary">
+          <button class="buy-again-button button-primary js-buy-again"
+           data-product-id="${product.id}">
             <img class="buy-again-icon" src="images/icons/buy-again.png">
             <span class="buy-again-message">Buy it again</span>
           </button>
@@ -95,114 +96,129 @@ async function loadPage() {
   }
 
   document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
+
+  document.querySelectorAll('.js-buy-again').
+    forEach((button)=>{
+      button.addEventListener('click', ()=>{
+        const productId=button.dataset.productId;
+
+        addToCart(productId, 1);
+
+        const Quantity=getCartQuantity();
+        document.querySelector('.js-order-cart-quantity').innerHTML=Quantity;
+        
+      })
+    });
 }
 loadPage();
 
-// async function loadOrder(){
+/*
+async function loadOrder(){
 
-//   // let orderGridHtml=localStorage.getItem('orderGrid')||'';
-//   let orderGridHtml='';
+  let orderGridHtml=localStorage.getItem('orderGrid')||'';
+  let orderGridHtml='';
   
-//   const neworder=localStorage.getItem('orders');
-//   if(!neworder){
-//     document.querySelector('.js-orders-grid').innerHTML=orderGridHtml;
-//     return;
-//   }
+  const neworder=localStorage.getItem('orders');
+  if(!neworder){
+    document.querySelector('.js-orders-grid').innerHTML=orderGridHtml;
+    return;
+  }
   
-//   await loadProductFetch();
+  await loadProductFetch();
 
-//     const orderId=orders[0].id;
-//     const orderTime=orders[0].orderTime;
-//     const totatCost=orders[0].totalCostCents;
+    const orderId=orders[0].id;
+    const orderTime=orders[0].orderTime;
+    const totatCost=orders[0].totalCostCents;
 
-//     const orderDate = new Date(orderTime);
+    const orderDate = new Date(orderTime);
 
-//     const formattedDate = new Intl.DateTimeFormat('en-US', {
-//       month: 'long',
-//       day: 'numeric',
-//       year: 'numeric'
-//     }).format(orderDate);
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    }).format(orderDate);
 
-//     let orderHtml=`
-//         <div class="order-container">
+    let orderHtml=`
+        <div class="order-container">
           
-//           <div class="order-header">
-//             <div class="order-header-left-section">
-//               <div class="order-date">
-//                 <div class="order-header-label">Order Placed:</div>
-//                 <div>${formattedDate}</div>
-//               </div>
-//               <div class="order-total">
-//                 <div class="order-header-label">Total:</div>
-//                 <div>${(totatCost/100).toFixed(2)}</div>
-//               </div>
-//             </div>
+          <div class="order-header">
+            <div class="order-header-left-section">
+              <div class="order-date">
+                <div class="order-header-label">Order Placed:</div>
+                <div>${formattedDate}</div>
+              </div>
+              <div class="order-total">
+                <div class="order-header-label">Total:</div>
+                <div>${(totatCost/100).toFixed(2)}</div>
+              </div>
+            </div>
 
-//             <div class="order-header-right-section">
-//               <div class="order-header-label">Order ID:</div>
-//               <div>${orderId}</div>
-//             </div>
-//           </div>
+            <div class="order-header-right-section">
+              <div class="order-header-label">Order ID:</div>
+              <div>${orderId}</div>
+            </div>
+          </div>
 
-//           <div class="order-details-grid">
-//     `;
+          <div class="order-details-grid">
+    `;
 
-//     orders.forEach((order)=> {
+    orders.forEach((order)=> {
 
-//         const productArr=order.products;
+        const productArr=order.products;
 
-//         productArr.forEach((item)=>{
-//             const matchingItem=getMatchingItem(item.productId);
+        productArr.forEach((item)=>{
+            const matchingItem=getMatchingItem(item.productId);
 
-//             deleteFromCart(item.productId);
+            deleteFromCart(item.productId);
 
-//             const date = new Date(item.estimatedDeliveryTime);
+            const date = new Date(item.estimatedDeliveryTime);
 
-//             const formatted = new Intl.DateTimeFormat('en-US', {
-//               month: 'long',
-//               day: 'numeric',
-//               year: 'numeric'
-//             }).format(date);
+            const formatted = new Intl.DateTimeFormat('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            }).format(date);
 
-//             orderHtml+=`
-//             <div class="product-image-container">
-//               <img src="${matchingItem.image}">
-//             </div>
+            orderHtml+=`
+            <div class="product-image-container">
+              <img src="${matchingItem.image}">
+            </div>
 
-//             <div class="product-details">
-//               <div class="product-name">
-//                 ${matchingItem.name}
-//               </div>
-//               <div class="product-delivery-date">
-//                 Arriving on: ${formatted}
-//               </div>
-//               <div class="product-quantity">
-//                 Quantity: ${item.quantity}
-//               </div>
-//               <button class="buy-again-button button-primary">
-//                 <img class="buy-again-icon" src="images/icons/buy-again.png">
-//                 <span class="buy-again-message">Buy it again</span>
-//               </button>
-//             </div>
+            <div class="product-details">
+              <div class="product-name">
+                ${matchingItem.name}
+              </div>
+              <div class="product-delivery-date">
+                Arriving on: ${formatted}
+              </div>
+              <div class="product-quantity">
+                Quantity: ${item.quantity}
+              </div>
+              <button class="buy-again-button button-primary">
+                <img class="buy-again-icon" src="images/icons/buy-again.png">
+                <span class="buy-again-message">Buy it again</span>
+              </button>
+            </div>
 
-//             <div class="product-actions">
-//               <a href="tracking.html">
-//                 <button class="track-package-button button-secondary">
-//                   Track package
-//                 </button>
-//               </a>
-//             </div>
-//         `;
-//         });
-//     });
-//     orderHtml+=`
-//          </div>
-//         </div>
-//     `;
-//     orderGridHtml+=orderHtml;
-//     // localStorage.setItem('orderGrid',orderGridHtml);
-//     // localStorage.removeItem('orders');
-//     document.querySelector('.js-orders-grid').innerHTML=orderGridHtml;
-// }
+            <div class="product-actions">
+              <a href="tracking.html">
+                <button class="track-package-button button-secondary">
+                  Track package
+                </button>
+              </a>
+            </div>
+        `;
+        });
+    });
+    orderHtml+=`
+         </div>
+        </div>
+    `;
+    orderGridHtml+=orderHtml;
+    // localStorage.setItem('orderGrid',orderGridHtml);
+    // localStorage.removeItem('orders');
+    document.querySelector('.js-orders-grid').innerHTML=orderGridHtml;
+}
 
-// loadOrder();
+loadOrder();
+*/
