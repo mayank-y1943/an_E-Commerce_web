@@ -8,13 +8,15 @@ function renderProductGrid(){
   let productHtml='';
 
   const url=new URL(window.location.href);
-  const search=url.searchParams.get('search');
+  let search=url.searchParams.get('search');
 
   let filteredProduct=products;
 
   if(search){
+    search=search.toLowerCase();
     filteredProduct=products.filter((product)=>{
-        return product.name.includes(search);
+        return product.name.toLowerCase().includes(search)||
+               product.keywords.includes(search);
     });
   }
 
