@@ -15,7 +15,6 @@ async function loadTrackingPage() {
     const order=getMatchingOrder(orderId);
     const product=getMatchingItem(productId);
 
-    console.log(order);
 
     let productDetails;
     order.products.forEach((details)=>{
@@ -23,6 +22,11 @@ async function loadTrackingPage() {
             productDetails=details;
         }
     });
+
+    const today = dayjs();
+    const orderTime = dayjs(order.orderTime);
+    const deliveryTime = dayjs(productDetails.estimatedDeliveryTime);
+    const percentProgress = ((today - orderTime) / (deliveryTime - orderTime)) * 100;
 
     const trackHtml=`
         <a class="back-to-orders-link link-primary" href="orders.html">
@@ -44,19 +48,19 @@ async function loadTrackingPage() {
         <img class="product-image" src="${product.image}">
 
         <div class="progress-labels-container">
-          <div class="progress-label">
+          <div class="progress-label ${percentProgress<50?'current-status':''}">
             Preparing
           </div>
-          <div class="progress-label current-status">
+          <div class="progress-label ${percentProgress>=50 && percentProgress<100?'current-status':''}">
             Shipped
           </div>
-          <div class="progress-label">
+          <div class="progress-label ${percentProgress>=100?'current-status':''}">
             Delivered
           </div>
         </div>
 
         <div class="progress-bar-container">
-          <div class="progress-bar"></div>
+          <div class="progress-bar" style="width: ${percentProgress}%;" ></div>
         </div>
     `;
 
